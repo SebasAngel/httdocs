@@ -1,20 +1,17 @@
-/* Estructura de carpetas */
-src
-|-- app
-|   |-- components
-|   |   |-- housing-location
-|   |   |   |-- housing-location.component.ts
-|   |   |   |-- housing-location.component.html
-|   |   |   |-- housing-location.component.css
-|   |-- services
-|   |   |-- housing-location-service.ts
-|   |-- models
-|   |   |-- housing-location.ts
-|   |-- modules
-|   |   |-- housing-location.module.ts
-|   |-- main.ts
+/* Estructura de carpetas:
+app/
+|-- components/
+|   |-- housing-location/
+|   |   |-- housing-location.component.ts
+|   |   |-- housing-location.component.html
+|-- services/
+|   |-- housing-location-service.ts
+|-- models/
+|   |-- housing-location.ts
+|-- main.ts
+*/
 
-/* Interfaz: housing-location.ts */
+/* Modelo: housing-location.ts */
 export interface HousingLocation {
   id?: number;
   name: string;
@@ -58,24 +55,13 @@ export class HousingLocationService {
   }
 }
 
-/* Módulo: housing-location.module.ts */
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HousingLocationComponent } from '../components/housing-location/housing-location.component';
-
-@NgModule({
-  declarations: [HousingLocationComponent],
-  imports: [FormsModule],
-  exports: [HousingLocationComponent]
-})
-export class HousingLocationModule {}
-
 /* Componente: housing-location.component.ts */
 import { Component, OnInit } from '@angular/core';
 import { HousingLocationService, HousingLocation } from '../../services/housing-location-service';
 
 @Component({
   selector: 'app-housing-location',
+  standalone: true,
   templateUrl: './housing-location.component.html',
   styleUrls: ['./housing-location.component.css']
 })
@@ -121,13 +107,11 @@ export class HousingLocationComponent implements OnInit {
   </ul>
 </div>
 
-/* main.ts */
+/* Bootstrap y rutas: main.ts */
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
-import { HousingLocationComponent } from './components/housing-location/housing-location.component';
 import { provideRouter, Routes } from '@angular/router';
-import { HousingLocationModule } from './modules/housing-location.module';
+import { HousingLocationComponent } from './components/housing-location/housing-location.component';
 
 const routes: Routes = [
   { path: 'locations', component: HousingLocationComponent },
@@ -135,5 +119,5 @@ const routes: Routes = [
 ];
 
 bootstrapApplication(HousingLocationComponent, {
-  providers: [provideHttpClient(), importProvidersFrom(HousingLocationModule), provideRouter(routes)]
+  providers: [provideHttpClient(), provideRouter(routes)]
 });
