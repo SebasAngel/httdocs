@@ -1,17 +1,3 @@
-/* Estructura de carpetas
-src/
-|-- app/
-    |-- components/
-        |-- housing-location/
-            |-- housing-location.component.ts
-            |-- housing-location.component.html
-    |-- services/
-        |-- housing-location-service.ts
-    |-- interfaces/
-        |-- housing-location.ts
-    |-- main.ts
-*/
-
 /* Interfaz: housing-location.ts */
 export interface HousingLocation {
   id?: number;
@@ -130,6 +116,40 @@ bootstrapApplication(HousingLocationComponent, {
 |-------------------------------------------------------- Recomendaciones para crear el proyecto --------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Estructura de carpetas
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+src/
+|-- app/
+    |-- components/
+        |-- housing-location/
+            |-- housing-location.component.ts
+            |-- housing-location.component.html
+    |-- services/
+        |-- housing-location-service.ts
+    |-- interfaces/
+        |-- housing-location.ts
+    |-- main.ts
+*/
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Crear el Proyecto desde la carpeta raíz
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+--- 01. Desde el proyecto:
+
+          PS ..> ng new app01
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Crear las Interfaces, Servicios y Componentes
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+--- 01. Desde la Terminal:
+
+          PS ..\app01> ng g i interfaces/housing-location
+          PS ..\app01> ng g s services/housing-location
+          PS ..\app01> ng g c components/housing-location
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 /* Inicio: src/main.ts */
