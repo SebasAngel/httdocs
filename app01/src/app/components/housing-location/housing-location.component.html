@@ -6,6 +6,12 @@
   <h2>Ubicaciones de Viviendas</h2>
   <ul>
     <li *ngFor="let location of locations">
+      <img
+          class="listing-photo"
+          [src]="location.photo"
+          alt="Exterior photo of {{ location.name }}"
+          crossorigin
+      />
       <h3>{{ location.name }} - {{ location.city }}, {{ location.state }}</h3>
       <p>Unidades disponibles: {{ location.availableUnits }}</p>
       <!-- <button (click)="deleteLocation(location.id!)">Eliminar</button> -->

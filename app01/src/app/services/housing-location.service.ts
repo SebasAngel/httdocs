@@ -8,7 +8,7 @@ import { HousingLocation } from '../interfaces/housing-location';
 })
 export class HousingLocationService {
 
-  private apiUrl = 'http://localhost:3000/locations';
+  private apiUrl = 'http://localhost:440/api_php/api_php_03_prac_location/controllers/Locations.php';
 
   constructor(private http: HttpClient) { }
 
