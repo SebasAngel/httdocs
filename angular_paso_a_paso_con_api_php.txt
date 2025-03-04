@@ -124,3 +124,93 @@ const routes: Routes = [
 bootstrapApplication(HousingLocationComponent, {
   providers: [provideHttpClient(), provideRouter(routes)]
 });
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------------------------------------------------- Recomendaciones para crear el proyecto --------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Inicio: src/main.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
+import { provideRouter } from '@angular/router';
+
+bootstrapApplication(AppComponent,{
+  providers: [provideRouter(routes)]
+}).catch((err) => console.error(err));
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Rutas: src/app/app.routes.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Routes } from '@angular/router';
+import { HousingLocationComponent } from './components/housing-location/housing-location.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
+
+export const routes: Routes = [
+    {path:'', component: HousingLocationComponent, title:'Hola Mundo'},
+    {path:'prueba', component: PruebaComponent, title:'Una Prueba de Rutas'}
+];
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente Principal (.ts): src/app/app.component.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, RouterModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'app01';
+}
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente Principal (.html): src/app/app.component.html */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+<main class="main"> 
+    <router-outlet />  
+</main>
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente HousingLocationComponent (.ts): src/app/components/housing-location/housing-location.component.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-housing-location',
+  imports: [],
+  templateUrl: './housing-location.component.html',
+  styleUrl: './housing-location.component.css'
+})
+export class HousingLocationComponent {
+
+}
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente Prueba (.ts): src/app/components/prueba/prueba.component.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-prueba',
+  imports: [],
+  templateUrl: './prueba.component.html',
+  styleUrl: './prueba.component.css'
+})
+export class PruebaComponent {
+
+}
