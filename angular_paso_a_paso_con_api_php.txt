@@ -1,17 +1,18 @@
-/* Estructura de carpetas:
-app/
-|-- components/
-|   |-- housing-location/
-|   |   |-- housing-location.component.ts
-|   |   |-- housing-location.component.html
-|-- services/
-|   |-- housing-location-service.ts
-|-- models/
-|   |-- housing-location.ts
-|-- main.ts
+/* Estructura de carpetas
+src/
+|-- app/
+    |-- components/
+        |-- housing-location/
+            |-- housing-location.component.ts
+            |-- housing-location.component.html
+    |-- services/
+        |-- housing-location-service.ts
+    |-- interfaces/
+        |-- housing-location.ts
+    |-- main.ts
 */
 
-/* Modelo: housing-location.ts */
+/* Interfaz: housing-location.ts */
 export interface HousingLocation {
   id?: number;
   name: string;
@@ -27,11 +28,11 @@ export interface HousingLocation {
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HousingLocation } from '../models/housing-location';
+import { HousingLocation } from '../interfaces/housing-location';
 
 @Injectable({ providedIn: 'root' })
 export class HousingLocationService {
-  private apiUrl = 'http://tu-servidor.com/api/location.php';
+  private apiUrl = 'http://localhost/api_php/api_php_03_prac_location/controllers/Locations.php';
 
   constructor(private http: HttpClient) {}
 
@@ -58,10 +59,12 @@ export class HousingLocationService {
 /* Componente: housing-location.component.ts */
 import { Component, OnInit } from '@angular/core';
 import { HousingLocationService, HousingLocation } from '../../services/housing-location-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-housing-location',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './housing-location.component.html',
   styleUrls: ['./housing-location.component.css']
 })
@@ -107,7 +110,7 @@ export class HousingLocationComponent implements OnInit {
   </ul>
 </div>
 
-/* Bootstrap y rutas: main.ts */
+/* Main.ts */
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, Routes } from '@angular/router';
