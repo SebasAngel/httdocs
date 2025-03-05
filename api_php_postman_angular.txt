@@ -26,21 +26,86 @@
 |-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-        api_php/                       #   Carpeta raíz del proyecto
-        ├── config/                    #   Carpeta que contiene las configuraciones.
-        │   └── DbConn.php             #   Configuración de la conexión a la base de datos.
-        ├── controllers/               #   Carpeta que contiene los controladores                        
-        │   └── Locations.php          #   Controlador de Locations (APIREST)
-        ├── models/                    #   Carpeta que contiene los modelos
-            └── Location.php           #   Modelo de Datos del 'Location'
+        htdocs/                                                               #   Carpeta raíz del proyecto
+          proyecto/                                                           #   Carpeta raíz del proyecto
+            backend/                                                          #   Carpeta raíz del proyecto
+            ├── config/                                                       #   Carpeta que contiene las configuraciones.
+            │   └── DbConn.php                                                #    Configuración de la conexión a la base de datos.
+            ├── controllers/                                                  #   Carpeta que contiene los controladores                        
+            │   └── Locations.php                                             #   Controlador de Locations (APIREST)
+            ├── models/                                                       #   Carpeta que contiene los modelos
+            │   └── Location.php                                              #   Modelo de Datos del 'Location'            
+
+
+        NOTA: Se debe crear la base de datos. Consulte el siguiente enlace:
+
+              
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
+|-- 02. models/locations.php ----------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
+          01    <?php
+          02        class Location {
+          03            private $conn;
+          04
+          05            public function __construct() {
+          06               $this->conn = DbConn::connection();
+          07            }
+          08
+          09            public function getAllHousingLocations() {
+          10                $stmt = $this->conn->query("SELECT * FROM locations");
+          11                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+          12            }
+          13
+          14            public function getHousingLocationById($id) {
+          15                $stmt = $this->conn->prepare("SELECT * FROM locations WHERE id = ?");
+          16                $stmt->execute([$id]);
+          17                return $stmt->fetch(PDO::FETCH_ASSOC);
+          18            }
+          19
+          20            public function createHousingLocation($name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+          21                $stmt = $this->conn->prepare("INSERT INTO locations (name, city, state, photo, availableUnits, wifi, laundry)
+          22                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+          23                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry]);
+          24            }
+          25
+          26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+          27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, wifi = ?, laundry = ? WHERE id = ?");
+          28                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
+          29            }
+          30
+          31            public function deleteHousingLocation($id) {
+          32                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
+          33                return $stmt->execute([$id]);
+          34            }
+          35        }
+          36    ?>
 
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 03. config/DbConn.php ----------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-
+          01.      <?php
+                    class DbConn{
+                        #  Conexión Local
+                        public static function connection(){
+                            try {
+                                $hostname = "localhost";
+                                $port = "3306";
+                                $database = "db";
+                                $username = "root";
+                                $password = "";
+                                $pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                return $pdo;
+                            } catch (Exception $e) {
+                                print "¡Error BD!: " . $e->getMessage() . "<br/>";
+                                die();
+                            }
+                    }
+                  }
+                ?>
 
 
 
@@ -67,17 +132,27 @@
 |-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-src/
-|-- app/
-    |-- components/
-        |-- housing-location/
-            |-- housing-location.component.ts
-            |-- housing-location.component.html
-    |-- services/
-        |-- housing-location-service.ts
-    |-- interfaces/
-        |-- housing-location.ts
-    |-- main.ts
+        htdocs/                                                               
+          proyecto/                                                           
+            backend/                                                          
+            ├── config/                                                       
+            │   └── DbConn.php                                                
+            ├── controllers/                                                  
+            │   └── Locations.php                                             
+            ├── models/                                                       
+            │   └── Location.php
+            frontend/                                                         
+            └── src/                                                          #   Modelo de Datos del 'Location'
+                └── app/                                                      #   Modelo de Datos del 'Location'
+                    └── components/                                           #   Modelo de Datos del 'Location'
+                    │   └── housing-location/                                 #   Modelo de Datos del 'Location'
+                    │       ├── housing-location.component.ts                 #   Modelo de Datos del 'Location'
+                    │       └── housing-location.component.html               #   Modelo de Datos del 'Location'
+                    └── services/                                             #   Modelo de Datos del 'Location'
+                    │   └── housing-location-service.ts                       #   Modelo de Datos del 'Location'
+                    └── interfaces/                                           #   Modelo de Datos del 'Location'
+                    │   └── housing-location.ts                               #   Modelo de Datos del 'Location'
+                    └── main.ts                                               #   Modelo de Datos del 'Location'
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 /* Crear el Proyecto desde la carpeta raíz
