@@ -38,6 +38,7 @@
 
         NOTA: Se debe crear la base de datos. Consulte el siguiente enlace:
 
+              https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/db/db.sql
               
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
