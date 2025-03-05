@@ -1,6 +1,5 @@
 <?php
     class DbConn{
-        #  Conexión Local
         public static function connection(){
             try {
                 $hostname = "localhost";

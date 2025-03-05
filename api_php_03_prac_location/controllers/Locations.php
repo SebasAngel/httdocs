@@ -8,8 +8,7 @@
     require_once("../models/Location.php");
 
     $location = new Location;
-
-    // Función para manejar errores y enviar respuestas JSON consistentes
+    
     function sendResponse($code, $message, $data = null) {
         http_response_code($code);
         echo json_encode(['message' => $message, 'datos' => $data]);
@@ -18,7 +17,6 @@
 
     $body = json_decode(file_get_contents("php://input"), true);
 
-    // Rutas usando métodos HTTP (GET, POST, PUT, DELETE)
     $method = $_SERVER['REQUEST_METHOD'];
 
     switch ($method) {

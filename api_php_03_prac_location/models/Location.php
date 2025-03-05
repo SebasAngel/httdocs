@@ -24,7 +24,8 @@
         }
 
         public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-            $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, wifi = ?, laundry = ? WHERE id = ?");
+            $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, 
+                    wifi = ?, laundry = ? WHERE id = ?");
             return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
         }
 

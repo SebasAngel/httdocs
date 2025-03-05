@@ -29,7 +29,7 @@
           proyecto/                                                           #   Carpeta raíz del proyecto
             backend/                                                          #   Carpeta raíz del proyecto
             ├── config/                                                       #   Carpeta que contiene las configuraciones.
-            │   └── DbConn.php                                                #    Configuración de la conexión a la base de datos.
+            │   └── DbConn.php                                                #   Configuración de la conexión a la base de datos.
             ├── controllers/                                                  #   Carpeta que contiene los controladores                        
             │   └── Locations.php                                             #   Controlador de Locations (APIREST)
             ├── models/                                                       #   Carpeta que contiene los modelos
@@ -42,83 +42,193 @@
               
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 01.02. models/locations.php -------------------------------------------------------------------------------------------------------------------------|
+|-- 01.02. models/location.php -------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-          01    <?php
-          02        class Location {
-          03            private $conn;
-          04
-          05            public function __construct() {
-          06               $this->conn = DbConn::connection();
-          07            }
-          08
-          09            public function getAllHousingLocations() {
-          10                $stmt = $this->conn->query("SELECT * FROM locations");
-          11                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-          12            }
-          13
-          14            public function getHousingLocationById($id) {
-          15                $stmt = $this->conn->prepare("SELECT * FROM locations WHERE id = ?");
-          16                $stmt->execute([$id]);
-          17                return $stmt->fetch(PDO::FETCH_ASSOC);
-          18            }
-          19
-          20            public function createHousingLocation($name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-          21                $stmt = $this->conn->prepare("INSERT INTO locations (name, city, state, photo, availableUnits, wifi, laundry)
-          22                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
-          23                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry]);
-          24            }
-          25
-          26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-          27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, wifi = ?, 
-          28                  laundry = ? WHERE id = ?");
-          29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
-          30            }
-          31
-          32            public function deleteHousingLocation($id) {
-          33                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
-          34                return $stmt->execute([$id]);
-          35            }
-          36        }
-          37    ?>
+            01    <?php
+            02        class Location {
+            03            private $conn;
+            04
+            05            public function __construct() {
+            06               $this->conn = DbConn::connection();
+            07            }
+            08
+            09            public function getAllHousingLocations() {
+            10                $stmt = $this->conn->query("SELECT * FROM locations");
+            11                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            12            }
+            13
+            14            public function getHousingLocationById($id) {
+            15                $stmt = $this->conn->prepare("SELECT * FROM locations WHERE id = ?");
+            16                $stmt->execute([$id]);
+            17                return $stmt->fetch(PDO::FETCH_ASSOC);
+            18            }
+            19
+            20            public function createHousingLocation($name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+            21                $stmt = $this->conn->prepare("INSERT INTO locations (name, city, state, photo, availableUnits, wifi, laundry)
+            22                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+            23                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry]);
+            24            }
+            25
+            26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+            27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, 
+            28                        wifi = ?, laundry = ? WHERE id = ?");
+            29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
+            30            }
+            31
+            32            public function deleteHousingLocation($id) {
+            33                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
+            34                return $stmt->execute([$id]);
+            35            }
+            36        }
+            37    ?>
+
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.03. config/DbConn.php ----------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-          01.      <?php
-          02.          class DbConn{
-          03.              #  Conexión Local
-          04.              public static function connection(){
-          05.                  try {
-          06.                      $hostname = "localhost";
-          07.                      $port = "3306";
-          08.                      $database = "db";
-          09.                      $username = "root";
-          10.                      $password = "";
-          11.                      $pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
-          12.                      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          13.                      return $pdo;
-          14.                  } catch (Exception $e) {
-          15.                      print "¡Error BD!: " . $e->getMessage() . "<br/>";
-          16.                      die();
-          17.                  }
-          18.          }
-          19.        }
-          20.      ?>
+            01      <?php
+            02          class DbConn{
+            03              public static function connection(){
+            04                  try {
+            05                      $hostname = "localhost";
+            06                      $port = "3306";
+            07                      $database = "db";
+            08                      $username = "root";
+            09                      $password = "";
+            10                      $pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
+            11                      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            12                      return $pdo;
+            13                  } catch (Exception $e) {
+            14                      print "¡Error BD!: "  $e->getMessage()  "<br/>";
+            15                      die();
+            16                  }
+            17              }
+            18          }
+            19      ?>
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.04. controllers/Locations.php --------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-
-
-
-
-
-
+            01      <?php
+            02          header("Access-Control-Allow-Origin: http://localhost:4200");
+            03          header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+            04          header("Access-Control-Allow-Headers: Content-Type, Authorization");
+            05          header('Content-Type: application/json');
+            06
+            07          require_once "../config/DbConn.php";
+            08          require_once("../models/Location.php");
+            09
+            10          $location = new Location;
+            11            
+            12          function sendResponse($code, $message, $data = null) {
+            13              http_response_code($code);
+            14              echo json_encode(['message' => $message, 'datos' => $data]);
+            15              exit;
+            16          }
+            17
+            18          $body = json_decode(file_get_contents("php://input"), true);
+            19
+            20          $method = $_SERVER['REQUEST_METHOD'];
+            21
+            22          switch ($method) {
+            23              case 'GET':
+            24                  if (isset($_GET['id'])) {
+            25                      try {
+            26                          $data = $location->getHousingLocationById($_GET['id']);
+            27                          if ($data) {
+            28                              sendResponse(200, "Ubicación de vivienda obtenida", $data);
+            29                          } else {
+            30                              sendResponse(404, "Ubicación de vivienda no encontrada");
+            31                          }
+            32                      } catch (Exception $e) {
+            33                          sendResponse(500, "Error al obtener la vivienda: " . $e->getMessage());
+            34                      }
+            35                  } else {
+            36                      try {
+            37                          $data = $location->getAllHousingLocations();
+            38                          sendResponse(200, "Viviendas y ubicación obtenidas", $data);
+            39                      } catch (Exception $e) {
+            40                          sendResponse(500, "Error al obtener viviendas y ubicación: " . $e->getMessage());
+            41                      }
+            42                  }
+            43                  break;
+            44
+            45              case 'POST':
+            46                  try {
+            47                      if (empty($body['name']) ||
+            48                          empty($body['city']) ||
+            49                          empty($body['state']) ||
+            50                          empty($body['photo']) ||
+            51                          empty($body['availableUnits']) ||
+            52                          !isset($body['wifi']) ||
+            53                          !isset($body['laundry'])) {
+            54                              sendResponse(400, "Datos de entrada inválidos");
+            55                      }
+            56                      $data = $location->createHousingLocation(
+            57                                  $body['name'],
+            58                                  $body['city'],
+            59                                  $body['state'],
+            60                                  $body['photo'],
+            61                                  $body['availableUnits'],
+            62                                  $body['wifi'],
+            63                                  $body['laundry']);
+            64                      sendResponse(201, "Vivienda  creada", $data);
+            65                  } catch (Exception $e) {
+            66                      sendResponse(500, "Error al crear la vivienda: " . $e->getMessage());
+            67                  }
+            68                  break;
+            69
+            70                case 'PUT':
+            71                  try {
+            72                      if (empty($body['id']) ||
+            73                          empty($body['name']) ||
+            74                          empty($body['city']) ||
+            75                          empty($body['state']) ||
+            76                          empty($body['photo']) ||
+            77                          empty($body['availableUnits']) ||
+            78                          !isset($body['wifi']) ||
+            79                          !isset($body['laundry'])) {
+            80                              sendResponse(400, "Datos de entrada inválidos");
+            81                      }
+            82
+            83                      $data = $location->updateHousingLocation(
+            84                                  $body['id'],
+            85                                  $body['name'],
+            86                                  $body['city'],
+            87                                  $body['state'],
+            88                                  $body['photo'],
+            89                                  $body['availableUnits'],
+            90                                  $body['wifi'],
+            91                                  $body['laundry']);
+            92                      sendResponse(200, "Vivienda y ubicación actualizada", $data);
+            93                  } catch (Exception $e) {
+            94                      sendResponse(500, "Error al actualizar vivienda y ubicación: " . $e->getMessage());
+            95                  }
+            96                  break;
+            97
+            98                  case 'DELETE':
+            99                      try {
+           100                          if (empty($body['id'])) {
+           101                              sendResponse(400, "ID de vivienda inválido");
+           102                          }
+           103
+           104                          $location->deleteHousingLocation($body['id']);
+           105                          sendResponse(200, "Vivienda eliminada");
+           106                      } catch (Exception $e) {
+           107                          sendResponse(500, "Error al eliminar vivienda: " . $e->getMessage());
+           108                      }
+           109                      break;
+           110
+           111              default:
+           112                  sendResponse(405, "Método no permitido");
+           113                  break;
+           114          }
+           115      ?>
+           
 
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
