@@ -71,16 +71,17 @@
           24            }
           25
           26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-          27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, wifi = ?, laundry = ? WHERE id = ?");
-          28                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
-          29            }
-          30
-          31            public function deleteHousingLocation($id) {
-          32                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
-          33                return $stmt->execute([$id]);
-          34            }
-          35        }
-          36    ?>
+          27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, wifi = ?, 
+          28                  laundry = ? WHERE id = ?");
+          29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
+          30            }
+          31
+          32            public function deleteHousingLocation($id) {
+          33                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
+          34                return $stmt->execute([$id]);
+          35            }
+          36        }
+          37    ?>
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.03. config/DbConn.php ----------------------------------------------------------------------------------------------------------------------------|
