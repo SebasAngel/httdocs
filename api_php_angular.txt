@@ -252,103 +252,133 @@
             │   └── Location.php
             frontend/                                                         
             └── src/                                                          #   Carpeta de recursos de Angular
-                └── app/                                                      #   Carpeta de la Aplicación de Angular
-                    └── components/                                           #   Carpeta de Componentes
-                    │   └── housing-location/                                 #   Carpeta del Componente 'housing-location'
-                    │       ├── housing-location.component.ts                 #   Componente 'housing-location' que alimenta la vista HTML
-                    │       └── housing-location.component.html               #   Vista del componente 'housing-location' en HTML
-                    └── services/                                             #   Carpeta de servicios
-                    │   └── housing-location-service.ts                       #   Servicio 'housing-location'
-                    └── interfaces/                                           #   Carpeta de Interfaces
-                    │   └── housing-location.ts                               #   Interfaz 'housing-location'
-                    └── main.ts                                               #   Inicio del proyecto Frontend
+                ├── app/                                                      #   Carpeta de la Aplicación de Angular
+                |   └── components/                                           #   Carpeta de Componentes
+                |   │   └── housing-location/                                 #   Carpeta del Componente 'housing-location'
+                |   │       ├── housing-location.component.ts                 #   Componente 'housing-location' que alimenta la vista HTML
+                |   │       └── housing-location.component.html               #   Vista del componente 'housing-location' en HTML
+                |   └── services/                                             #   Carpeta de servicios
+                |   │   └── housing-location-service.ts                       #   Servicio 'housing-location'
+                |   └── interfaces/                                           #   Carpeta de Interfaces
+                |   │   └── housing-location.ts                               #   Interfaz 'housing-location'
+                |   └── app.component.html                                    #   Componente Principal (.html)
+                |   └── app.component.ts                                      #   Componente Principal (.ts)
+                |   └── app.routes.ts                                         #   Configuración de rutas
+                └── main.ts                                                   #   Inicio del proyecto Frontend
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 02. Crear el Proyecto desde la carpeta raíz ---------------------------------------------------------------------------------------------------------|
+|-- 02. Crear el Proyecto de Angular en la carpeta raíz y arrancar el servidor --------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
---- 01. Desde el proyecto:
+--- 02.01. Desde la Terminal:
 
-          PS ..> ng new frontend
+            PS C:\..> ng new frontend
 
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Crear las Interfaces, Servicios y Componentes
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+            ❯ CSS             [ https://developer.mozilla.org/docs/Web/CSS                     ]
+            ? Do you want to enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering)? (y/N) n
 
---- 01. Desde la Terminal:
+--- 02.02. Ingresar a la carpeta 'frontend' desde la Terminal:
 
-          PS ..\app01> ng g i interfaces/housing-location
-          PS ..\app01> ng g s services/housing-location
-          PS ..\app01> ng g c components/housing-location
+            PS C:\..> cd frontend
 
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Inicio: src/main.ts */
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+--- 02.03. Ejecutar el Servidor desde la Terminal:
 
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { routes } from './app/app.routes';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+            PS C:\..\frontend> ng s -o
 
-bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(), provideRouter(routes)]
-})
-  .catch((err) => console.error(err));
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Componente Principal (.ts): src/app/app.component.ts */
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
-
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, RouterModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
-})
-export class AppComponent {
-  title = 'app01';
-}
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Componente Principal (.html): src/app/app.component.html */
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-<main class="main"> 
-    <router-outlet />  
-</main>
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Rutas: src/app/app.routes.ts */
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-import { Routes } from '@angular/router';
-import { HousingLocationComponent } from './components/housing-location/housing-location.component';
-
-export const routes: Routes = [
-    { path: 'locations', component: HousingLocationComponent },
-    { path: '', redirectTo: '/locations', pathMatch: 'full' }
-];
+            (y/N) y
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Interfaz: housing-location.ts */
+|-- 03. Crear las Interfaces, Servicios y Componentes ---------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-export interface HousingLocation {
-  id?: number;
-  name: string;
-  city: string;
-  state: string;
-  photo: string;
-  availableUnits: number;
-  wifi: boolean;
-  laundry: boolean;
-}
+--- 03.01. Abrir otra Terminal e ingresar a la carpeta 'frontend':
+
+            PS C:\..> cd frontend
+
+--- 03.02. Cambiar el nombre de las Terminales. En la parte inferior derecha, seleccionar y presionar F2.
+
+--- 03.03. Crear la interfaz, servicio y componente de 'housing-location'
+
+            PS C:\..\frontend> ng g i interfaces/housing-location
+            PS C:\..\frontend> ng g s services/housing-location
+            PS C:\..\frontend> ng g c components/home
+            PS C:\..\frontend> ng g c components/housing-location
+            PS C:\..\frontend> ng g c components/details
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 04. Inicio: src/main.ts -----------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+            01      import { bootstrapApplication } from '@angular/platform-browser';
+            02      import { AppComponent } from './app/app.component';
+            03      import { routes } from './app/app.routes';
+            04      import { provideRouter } from '@angular/router';
+            05      import { provideHttpClient } from '@angular/common/http';
+            06
+            07      bootstrapApplication(AppComponent, {
+            08        providers: [provideHttpClient(), provideRouter(routes)]
+            09      })
+            10        .catch((err) => console.error(err));
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 05. Componente Principal (.ts): src/app/app.component.ts --------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+            01      import { Component } from '@angular/core';
+            02      import { RouterOutlet, RouterModule } from '@angular/router';
+            03
+            04      @Component({
+            05        selector: 'app-root',
+            06        imports: [RouterOutlet, RouterModule],
+            07        templateUrl: './app.component.html',
+            08        styleUrl: './app.component.css'
+            09      })
+            10      export class AppComponent {
+            11        title = 'frontend';
+            12      }
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 06. Componente Principal (.html): src/app/app.component.html ----------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+            01      <main class="main"> 
+            02          <router-outlet />  
+            03      </main>
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--07. Rutas: src/app/app.routes.ts ---------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+            01      import { Routes } from '@angular/router';
+            02      import { HomeComponent } from './components/home/home.component';
+            03      import { DetailsComponent } from './components/details/details.component';
+            04
+            05      export const routes: Routes = [
+            06          {path:'', component: HomeComponent, title:'Home Page'},
+            07          {path:'details/:id', component: DetailsComponent, title:'Home Details'}
+            08      ];
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--08. Interfaz: src/app/interfaces/housing-location.ts -------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+            01      export interface HousingLocation {
+            02        id?: number;
+            03        name: string;
+            04        city: string;
+            05        state: string;
+            06        photo: string;
+            07        availableUnits: number;
+            08        wifi: boolean;
+            09        laundry: boolean;
+            10      }
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
