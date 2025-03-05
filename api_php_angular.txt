@@ -1,4 +1,4 @@
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 |||----------------------------------------------------------------------------------------------------------------------------------------------------|||
 |||------------------------------------------------------------------ APIREST EN PHP ------------------------------------------------------------------|||
 |||--------------------------------------------------------------- Y CONSUMO EN ANGULAR ---------------------------------------------------------------|||
@@ -237,11 +237,6 @@
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 
 
-
-
-
-
-
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -256,25 +251,26 @@
             ├── models/                                                       
             │   └── Location.php
             frontend/                                                         
-            └── src/                                                          #   Modelo de Datos del 'Location'
-                └── app/                                                      #   Modelo de Datos del 'Location'
-                    └── components/                                           #   Modelo de Datos del 'Location'
-                    │   └── housing-location/                                 #   Modelo de Datos del 'Location'
-                    │       ├── housing-location.component.ts                 #   Modelo de Datos del 'Location'
-                    │       └── housing-location.component.html               #   Modelo de Datos del 'Location'
-                    └── services/                                             #   Modelo de Datos del 'Location'
-                    │   └── housing-location-service.ts                       #   Modelo de Datos del 'Location'
-                    └── interfaces/                                           #   Modelo de Datos del 'Location'
-                    │   └── housing-location.ts                               #   Modelo de Datos del 'Location'
-                    └── main.ts                                               #   Modelo de Datos del 'Location'
+            └── src/                                                          #   Carpeta de recursos de Angular
+                └── app/                                                      #   Carpeta de la Aplicación de Angular
+                    └── components/                                           #   Carpeta de Componentes
+                    │   └── housing-location/                                 #   Carpeta del Componente 'housing-location'
+                    │       ├── housing-location.component.ts                 #   Componente 'housing-location' que alimenta la vista HTML
+                    │       └── housing-location.component.html               #   Vista del componente 'housing-location' en HTML
+                    └── services/                                             #   Carpeta de servicios
+                    │   └── housing-location-service.ts                       #   Servicio 'housing-location'
+                    └── interfaces/                                           #   Carpeta de Interfaces
+                    │   └── housing-location.ts                               #   Interfaz 'housing-location'
+                    └── main.ts                                               #   Inicio del proyecto Frontend
+
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Crear el Proyecto desde la carpeta raíz
+|-- 02. Crear el Proyecto desde la carpeta raíz ---------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 --- 01. Desde el proyecto:
 
-          PS ..> ng new app01
+          PS ..> ng new frontend
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 /* Crear las Interfaces, Servicios y Componentes
