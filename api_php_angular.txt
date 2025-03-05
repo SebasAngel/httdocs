@@ -25,15 +25,15 @@
 |-- 01.01. Estructura de carpetas -----------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-        htdocs/                                                               #   Carpeta raíz del proyecto
-          proyecto/                                                           #   Carpeta raíz del proyecto
-            backend/                                                          #   Carpeta raíz del proyecto
-            ├── config/                                                       #   Carpeta que contiene las configuraciones.
-            │   └── DbConn.php                                                #   Configuración de la conexión a la base de datos.
-            ├── controllers/                                                  #   Carpeta que contiene los controladores                        
-            │   └── Locations.php                                             #   Controlador de Locations (APIREST)
-            ├── models/                                                       #   Carpeta que contiene los modelos
-            │   └── Location.php                                              #   Modelo de Datos del 'Location'            
+        htdocs/                                #   Carpeta de XAMPP donde se guardan los proyectos PHP
+          proyecto/                            #   Carpeta raíz del proyecto
+            backend/                           #   Carpeta de la APIRESTFULL en PHP
+            ├── config/                        #   Carpeta que contiene las configuraciones.
+            │   └── DbConn.php                 #   Configuración de la conexión a la base de datos.
+            ├── controllers/                   #   Carpeta que contiene los controladores                        
+            │   └── Locations.php              #   Controlador de Locations (Entrada el Proyecto)
+            ├── models/                        #   Carpeta que contiene los modelos
+            │   └── Location.php               #   Modelo de Datos de 'Location'
 
 
         NOTA: Se debe crear la base de datos. Consulte el siguiente enlace:
@@ -228,7 +228,7 @@
            113                  break;
            114          }
            115      ?>
-           
+
 
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
