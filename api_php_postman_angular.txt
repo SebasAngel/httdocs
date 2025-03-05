@@ -1,0 +1,269 @@
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+|||----------------------------------------------------------------------------------------------------------------------------------------------------|||
+|||------------------------------------------------------- APIREST EN PHP CON PRUEBA EN POSTMAN -------------------------------------------------------|||
+|||-------------------------------------------------------------- Y CONSUMO EN ANGULAR ----------------------------------------------------------------|||
+|||----------------------------------------------------------------------------------------------------------------------------------------------------|||
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+|||                                                                                                                                                    ||| 
+||| -- 01. Creación de la APIREST en PHP                                                                                                               |||
+||| -- 02. Pruebas de la APIREST en POSTMAN                                                                                                            |||
+||| -- 03. Consumo de la APIREST con ANGULAR                                                                                                           |||
+|||                                                                                                                                                    ||| 
+||| -- AUTOR: INSTRUCTOR ALBEIRO RAMOS. SENA, 2025                                                                                                     |||
+|||                                                                                                                                                    ||| 
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+
+
+
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------- 01. CREACIÓN DE LA APIREST EN PHP -----------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+        api_php/                       #   Carpeta raíz del proyecto
+        ├── config/                    #   Carpeta que contiene las configuraciones.
+        │   └── DbConn.php             #   Configuración de la conexión a la base de datos.
+        ├── controllers/               #   Carpeta que contiene los controladores                        
+        │   └── Locations.php          #   Controlador de Locations (APIREST)
+        ├── models/                    #   Carpeta que contiene los modelos
+            └── Location.php           #   Modelo de Datos del 'Location'
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------- 02. PRUEBAS DE LA APIREST EN POSTMAN ---------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
+
+
+
+
+
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+src/
+|-- app/
+    |-- components/
+        |-- housing-location/
+            |-- housing-location.component.ts
+            |-- housing-location.component.html
+    |-- services/
+        |-- housing-location-service.ts
+    |-- interfaces/
+        |-- housing-location.ts
+    |-- main.ts
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Crear el Proyecto desde la carpeta raíz
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+--- 01. Desde el proyecto:
+
+          PS ..> ng new app01
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Crear las Interfaces, Servicios y Componentes
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+--- 01. Desde la Terminal:
+
+          PS ..\app01> ng g i interfaces/housing-location
+          PS ..\app01> ng g s services/housing-location
+          PS ..\app01> ng g c components/housing-location
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Inicio: src/main.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideHttpClient(), provideRouter(routes)]
+})
+  .catch((err) => console.error(err));
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente Principal (.ts): src/app/app.component.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, RouterModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'app01';
+}
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente Principal (.html): src/app/app.component.html */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+<main class="main"> 
+    <router-outlet />  
+</main>
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Rutas: src/app/app.routes.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Routes } from '@angular/router';
+import { HousingLocationComponent } from './components/housing-location/housing-location.component';
+
+export const routes: Routes = [
+    { path: 'locations', component: HousingLocationComponent },
+    { path: '', redirectTo: '/locations', pathMatch: 'full' }
+];
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Interfaz: housing-location.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+export interface HousingLocation {
+  id?: number;
+  name: string;
+  city: string;
+  state: string;
+  photo: string;
+  availableUnits: number;
+  wifi: boolean;
+  laundry: boolean;
+}
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Servicio: housing-location-service.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HousingLocation } from '../interfaces/housing-location';
+
+@Injectable({ providedIn: 'root' })
+export class HousingLocationService {
+  private apiUrl = 'http://localhost/api_php/api_php_03_prac_location/controllers/Locations.php';
+
+  constructor(private http: HttpClient) {}
+
+  getAllLocations(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  createLocation(location: HousingLocation): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(this.apiUrl, location, { headers });
+  }
+
+  updateLocation(location: HousingLocation): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<any>(this.apiUrl, location, { headers });
+  }
+
+  deleteLocation(id: number): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.request<any>('DELETE', this.apiUrl, { body: { id }, headers });
+  }
+}
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Componente: housing-location.component.ts */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+import { Component, OnInit } from '@angular/core';
+import { HousingLocationService, HousingLocation } from '../../services/housing-location-service';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-housing-location',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './housing-location.component.html',
+  styleUrls: ['./housing-location.component.css']
+})
+export class HousingLocationComponent implements OnInit {
+  locations: HousingLocation[] = [];
+
+  constructor(private housingLocationService: HousingLocationService) {}
+
+  ngOnInit(): void {
+    this.getLocations();
+  }
+
+  getLocations(): void {
+    this.housingLocationService.getAllLocations().subscribe(
+      response => {
+        console.log('Respuesta de la API:', response); // <-- Aquí agregamos el console.log
+        this.locations = response.datos;
+      },
+      error => console.error('Error al obtener las ubicaciones:', error)
+    );
+  }
+
+  deleteLocation(id: number): void {
+    this.housingLocationService.deleteLocation(id).subscribe(
+      () => this.getLocations(),
+      error => console.error('Error al eliminar la vivienda:', error)
+    );
+  }
+}
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+/* Plantilla HTML: housing-location.component.html */
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+<nav>
+  <a routerLink="/locations">Ver Ubicaciones</a>
+</nav>
+
+<div>
+  <h2>Ubicaciones de Viviendas</h2>
+  <ul>
+    <li *ngFor="let location of locations">
+      <h3>{{ location.name }} - {{ location.city }}, {{ location.state }}</h3>
+      <p>Unidades disponibles: {{ location.availableUnits }}</p>
+      <!-- <button (click)="deleteLocation(location.id!)">Eliminar</button> -->
+    </li>
+  </ul>
+</div>
+
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 01. Estructura de carpetas                                                                                                                           |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
