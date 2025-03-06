@@ -561,3 +561,17 @@ export class HousingLocationComponent implements OnInit {
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01. Estructura de carpetas                                                                                                                           |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+Respuesta JSON: {message: 'Viviendas y ubicación obtenidas', datos: Array(10)}
+                
+datos
+: 
+(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+message
+: 
+"Viviendas y ubicación obtenidas"
+
+[[Prototype]]
+: 
+Object
