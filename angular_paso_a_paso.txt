@@ -1170,7 +1170,7 @@
             10.
             11.    url = 'http://localhost:3000/locations';
             12.
-            13.    async getAllHousingLocation(): Promise<HousingLocation[]> {
+            13.    async getAllHousingLocations(): Promise<HousingLocation[]> {
             14.      const data = await fetch(this.url);
             15.      return (await data.json());
             16.    }
