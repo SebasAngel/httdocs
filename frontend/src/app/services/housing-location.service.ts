@@ -14,4 +14,19 @@ export class HousingLocationService {
   getAllLocations(): Observable<any> {
     return this.http.get<any>(this.url);
   }
+
+  createLocation(location: HousingLocation): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(this.url, location, { headers });
+  }
+
+  updateLocation(location: HousingLocation): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<any>(this.url, location, { headers });
+  }
+
+  deleteLocation(id: number): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.request<any>('DELETE', this.url, { body: { id }, headers });
+  }
 }

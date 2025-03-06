@@ -25,209 +25,209 @@
 |-- 01.01. Estructura de carpetas -----------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-        htdocs/                                #   Carpeta de XAMPP donde se guardan los proyectos PHP
-          proyecto/                            #   Carpeta raíz del proyecto
-            backend/                           #   Carpeta de la APIRESTFULL en PHP
-            ├── config/                        #   Carpeta que contiene las configuraciones.
-            │   └── DbConn.php                 #   Configuración de la conexión a la base de datos.
-            ├── controllers/                   #   Carpeta que contiene los controladores                        
-            │   └── Locations.php              #   Controlador de Locations (Entrada el Proyecto)
-            ├── models/                        #   Carpeta que contiene los modelos
-            │   └── Location.php               #   Modelo de Datos de 'Location'
+              htdocs/                                    #   Carpeta de XAMPP donde se guardan los proyectos PHP
+              └── proyecto/                              #   Carpeta raíz del proyecto
+                  └── backend/                           #   Carpeta de la APIRESTFULL en PHP
+                      ├── config/                        #   Carpeta que contiene las configuraciones.
+                      │   └── DbConn.php                 #   Configuración de la conexión a la base de datos.
+                      ├── controllers/                   #   Carpeta que contiene los controladores                        
+                      │   └── Locations.php              #   Controlador de Locations (Entrada el Proyecto)
+                      ├── models/                        #   Carpeta que contiene los modelos
+                      │   └── Location.php               #   Modelo de Datos de 'Location'
 
 
-        NOTA: Se debe crear la base de datos. Consulte el siguiente enlace:
+              NOTA: Se debe crear la base de datos. Puede descargarla desde el siguiente enlace:
 
-              https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/db/db.sql
+                    https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/db/db.sql
               
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.02. models/location.php -------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01    <?php
-            02        class Location {
-            03            private $conn;
-            04
-            05            public function __construct() {
-            06               $this->conn = DbConn::connection();
-            07            }
-            08
-            09            public function getAllHousingLocations() {
-            10                $stmt = $this->conn->query("SELECT * FROM locations");
-            11                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            12            }
-            13
-            14            public function getHousingLocationById($id) {
-            15                $stmt = $this->conn->prepare("SELECT * FROM locations WHERE id = ?");
-            16                $stmt->execute([$id]);
-            17                return $stmt->fetch(PDO::FETCH_ASSOC);
-            18            }
-            19
-            20            public function createHousingLocation($name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-            21                $stmt = $this->conn->prepare("INSERT INTO locations (name, city, state, photo, availableUnits, wifi, laundry)
-            22                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
-            23                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry]);
-            24            }
-            25
-            26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-            27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, 
-            28                        wifi = ?, laundry = ? WHERE id = ?");
-            29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
-            30            }
-            31
-            32            public function deleteHousingLocation($id) {
-            33                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
-            34                return $stmt->execute([$id]);
-            35            }
-            36        }
-            37    ?>
+              01    <?php
+              02        class Location {
+              03            private $conn;
+              04
+              05            public function __construct() {
+              06               $this->conn = DbConn::connection();
+              07            }
+              08
+              09            public function getAllHousingLocations() {
+              10                $stmt = $this->conn->query("SELECT * FROM locations");
+              11                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+              12            }
+              13
+              14            public function getHousingLocationById($id) {
+              15                $stmt = $this->conn->prepare("SELECT * FROM locations WHERE id = ?");
+              16                $stmt->execute([$id]);
+              17                return $stmt->fetch(PDO::FETCH_ASSOC);
+              18            }
+              19
+              20            public function createHousingLocation($name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+              21                $stmt = $this->conn->prepare("INSERT INTO locations (name, city, state, photo, availableUnits, wifi, laundry)
+              22                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+              23                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry]);
+              24            }
+              25
+              26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
+              27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, 
+              28                        wifi = ?, laundry = ? WHERE id = ?");
+              29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
+              30            }
+              31
+              32            public function deleteHousingLocation($id) {
+              33                $stmt = $this->conn->prepare("DELETE FROM locations WHERE id = ?");
+              34                return $stmt->execute([$id]);
+              35            }
+              36        }
+              37    ?>
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.03. config/DbConn.php ----------------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01      <?php
-            02          class DbConn{
-            03              public static function connection(){
-            04                  try {
-            05                      $hostname = "localhost";
-            06                      $port = "3306";
-            07                      $database = "db";
-            08                      $username = "root";
-            09                      $password = "";
-            10                      $pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
-            11                      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            12                      return $pdo;
-            13                  } catch (Exception $e) {
-            14                      print "¡Error BD!: "  $e->getMessage()  "<br/>";
-            15                      die();
-            16                  }
-            17              }
-            18          }
-            19      ?>
+              01      <?php
+              02          class DbConn{
+              03              public static function connection(){
+              04                  try {
+              05                      $hostname = "localhost";
+              06                      $port = "3306";
+              07                      $database = "db";
+              08                      $username = "root";
+              09                      $password = "";
+              10                      $pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
+              11                      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+              12                      return $pdo;
+              13                  } catch (Exception $e) {
+              14                      print "¡Error BD!: "  $e->getMessage()  "<br/>";
+              15                      die();
+              16                  }
+              17              }
+              18          }
+              19      ?>
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.04. controllers/Locations.php --------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01      <?php
-            02          header("Access-Control-Allow-Origin: http://localhost:4200");
-            03          header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-            04          header("Access-Control-Allow-Headers: Content-Type, Authorization");
-            05          header('Content-Type: application/json');
-            06
-            07          require_once "../config/DbConn.php";
-            08          require_once("../models/Location.php");
-            09
-            10          $location = new Location;
-            11            
-            12          function sendResponse($code, $message, $data = null) {
-            13              http_response_code($code);
-            14              echo json_encode(['message' => $message, 'datos' => $data]);
-            15              exit;
-            16          }
-            17
-            18          $body = json_decode(file_get_contents("php://input"), true);
-            19
-            20          $method = $_SERVER['REQUEST_METHOD'];
-            21
-            22          switch ($method) {
-            23              case 'GET':
-            24                  if (isset($_GET['id'])) {
-            25                      try {
-            26                          $data = $location->getHousingLocationById($_GET['id']);
-            27                          if ($data) {
-            28                              sendResponse(200, "Ubicación de vivienda obtenida", $data);
-            29                          } else {
-            30                              sendResponse(404, "Ubicación de vivienda no encontrada");
-            31                          }
-            32                      } catch (Exception $e) {
-            33                          sendResponse(500, "Error al obtener la vivienda: " . $e->getMessage());
-            34                      }
-            35                  } else {
-            36                      try {
-            37                          $data = $location->getAllHousingLocations();
-            38                          sendResponse(200, "Viviendas y ubicación obtenidas", $data);
-            39                      } catch (Exception $e) {
-            40                          sendResponse(500, "Error al obtener viviendas y ubicación: " . $e->getMessage());
-            41                      }
-            42                  }
-            43                  break;
-            44
-            45              case 'POST':
-            46                  try {
-            47                      if (empty($body['name']) ||
-            48                          empty($body['city']) ||
-            49                          empty($body['state']) ||
-            50                          empty($body['photo']) ||
-            51                          empty($body['availableUnits']) ||
-            52                          !isset($body['wifi']) ||
-            53                          !isset($body['laundry'])) {
-            54                              sendResponse(400, "Datos de entrada inválidos");
-            55                      }
-            56                      $data = $location->createHousingLocation(
-            57                                  $body['name'],
-            58                                  $body['city'],
-            59                                  $body['state'],
-            60                                  $body['photo'],
-            61                                  $body['availableUnits'],
-            62                                  $body['wifi'],
-            63                                  $body['laundry']);
-            64                      sendResponse(201, "Vivienda  creada", $data);
-            65                  } catch (Exception $e) {
-            66                      sendResponse(500, "Error al crear la vivienda: " . $e->getMessage());
-            67                  }
-            68                  break;
-            69
-            70                case 'PUT':
-            71                  try {
-            72                      if (empty($body['id']) ||
-            73                          empty($body['name']) ||
-            74                          empty($body['city']) ||
-            75                          empty($body['state']) ||
-            76                          empty($body['photo']) ||
-            77                          empty($body['availableUnits']) ||
-            78                          !isset($body['wifi']) ||
-            79                          !isset($body['laundry'])) {
-            80                              sendResponse(400, "Datos de entrada inválidos");
-            81                      }
-            82
-            83                      $data = $location->updateHousingLocation(
-            84                                  $body['id'],
-            85                                  $body['name'],
-            86                                  $body['city'],
-            87                                  $body['state'],
-            88                                  $body['photo'],
-            89                                  $body['availableUnits'],
-            90                                  $body['wifi'],
-            91                                  $body['laundry']);
-            92                      sendResponse(200, "Vivienda y ubicación actualizada", $data);
-            93                  } catch (Exception $e) {
-            94                      sendResponse(500, "Error al actualizar vivienda y ubicación: " . $e->getMessage());
-            95                  }
-            96                  break;
-            97
-            98                  case 'DELETE':
-            99                      try {
-           100                          if (empty($body['id'])) {
-           101                              sendResponse(400, "ID de vivienda inválido");
-           102                          }
-           103
-           104                          $location->deleteHousingLocation($body['id']);
-           105                          sendResponse(200, "Vivienda eliminada");
-           106                      } catch (Exception $e) {
-           107                          sendResponse(500, "Error al eliminar vivienda: " . $e->getMessage());
-           108                      }
-           109                      break;
-           110
-           111              default:
-           112                  sendResponse(405, "Método no permitido");
-           113                  break;
-           114          }
-           115      ?>
+              01      <?php
+              02          header("Access-Control-Allow-Origin: http://localhost:4200");
+              03          header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+              04          header("Access-Control-Allow-Headers: Content-Type, Authorization");
+              05          header('Content-Type: application/json');
+              06
+              07          require_once "../config/DbConn.php";
+              08          require_once("../models/Location.php");
+              09
+              10          $location = new Location;
+              11            
+              12          function sendResponse($code, $message, $data = null) {
+              13              http_response_code($code);
+              14              echo json_encode(['message' => $message, 'datos' => $data]);
+              15              exit;
+              16          }
+              17
+              18          $body = json_decode(file_get_contents("php://input"), true);
+              19
+              20          $method = $_SERVER['REQUEST_METHOD'];
+              21
+              22          switch ($method) {
+              23              case 'GET':
+              24                  if (isset($_GET['id'])) {
+              25                      try {
+              26                          $data = $location->getHousingLocationById($_GET['id']);
+              27                          if ($data) {
+              28                              sendResponse(200, "Ubicación de vivienda obtenida", $data);
+              29                          } else {
+              30                              sendResponse(404, "Ubicación de vivienda no encontrada");
+              31                          }
+              32                      } catch (Exception $e) {
+              33                          sendResponse(500, "Error al obtener la vivienda: " . $e->getMessage());
+              34                      }
+              35                  } else {
+              36                      try {
+              37                          $data = $location->getAllHousingLocations();
+              38                          sendResponse(200, "Viviendas y ubicación obtenidas", $data);
+              39                      } catch (Exception $e) {
+              40                          sendResponse(500, "Error al obtener viviendas y ubicación: " . $e->getMessage());
+              41                      }
+              42                  }
+              43                  break;
+              44
+              45              case 'POST':
+              46                  try {
+              47                      if (empty($body['name']) ||
+              48                          empty($body['city']) ||
+              49                          empty($body['state']) ||
+              50                          empty($body['photo']) ||
+              51                          empty($body['availableUnits']) ||
+              52                          !isset($body['wifi']) ||
+              53                          !isset($body['laundry'])) {
+              54                              sendResponse(400, "Datos de entrada inválidos");
+              55                      }
+              56                      $data = $location->createHousingLocation(
+              57                                  $body['name'],
+              58                                  $body['city'],
+              59                                  $body['state'],
+              60                                  $body['photo'],
+              61                                  $body['availableUnits'],
+              62                                  $body['wifi'],
+              63                                  $body['laundry']);
+              64                      sendResponse(201, "Vivienda  creada", $data);
+              65                  } catch (Exception $e) {
+              66                      sendResponse(500, "Error al crear la vivienda: " . $e->getMessage());
+              67                  }
+              68                  break;
+              69
+              70                case 'PUT':
+              71                  try {
+              72                      if (empty($body['id']) ||
+              73                          empty($body['name']) ||
+              74                          empty($body['city']) ||
+              75                          empty($body['state']) ||
+              76                          empty($body['photo']) ||
+              77                          empty($body['availableUnits']) ||
+              78                          !isset($body['wifi']) ||
+              79                          !isset($body['laundry'])) {
+              80                              sendResponse(400, "Datos de entrada inválidos");
+              81                      }
+              82
+              83                      $data = $location->updateHousingLocation(
+              84                                  $body['id'],
+              85                                  $body['name'],
+              86                                  $body['city'],
+              87                                  $body['state'],
+              88                                  $body['photo'],
+              89                                  $body['availableUnits'],
+              90                                  $body['wifi'],
+              91                                  $body['laundry']);
+              92                      sendResponse(200, "Vivienda y ubicación actualizada", $data);
+              93                  } catch (Exception $e) {
+              94                      sendResponse(500, "Error al actualizar vivienda y ubicación: " . $e->getMessage());
+              95                  }
+              96                  break;
+              97
+              98                  case 'DELETE':
+              99                      try {
+             100                          if (empty($body['id'])) {
+             101                              sendResponse(400, "ID de vivienda inválido");
+             102                          }
+             103
+             104                          $location->deleteHousingLocation($body['id']);
+             105                          sendResponse(200, "Vivienda eliminada");
+             106                      } catch (Exception $e) {
+             107                          sendResponse(500, "Error al eliminar vivienda: " . $e->getMessage());
+             108                      }
+             109                      break;
+             110
+             111              default:
+             112                  sendResponse(405, "Método no permitido");
+             113                  break;
+             114          }
+             115      ?>
 
 
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
@@ -238,237 +238,265 @@
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 01. Estructura de carpetas --------------------------------------------------------------------------------------------------------------------------|
+|-- 02.01. Estructura de carpetas -----------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-        htdocs/                                                               
-          proyecto/                                                           
-            backend/                                                          
-            ├── config/                                                       
-            │   └── DbConn.php                                                
-            ├── controllers/                                                  
-            │   └── Locations.php                                             
-            ├── models/                                                       
-            │   └── Location.php
-            frontend/                                                         
-            └── src/                                                          #   Carpeta de recursos de Angular
-                ├── app/                                                      #   Carpeta de la Aplicación de Angular
-                |   └── components/                                           #   Carpeta de Componentes
-                |   │   └── housing-location/                                 #   Carpeta del Componente 'housing-location'
-                |   │       ├── housing-location.component.ts                 #   Componente 'housing-location' que alimenta la vista HTML
-                |   │       └── housing-location.component.html               #   Vista del componente 'housing-location' en HTML
-                |   └── services/                                             #   Carpeta de servicios
-                |   │   └── housing-location.service.ts                       #   Servicio 'housing-location'
-                |   └── interfaces/                                           #   Carpeta de Interfaces
-                |   │   └── housing-location.ts                               #   Interfaz 'housing-location'
-                |   └── app.component.html                                    #   Componente Principal (.html)
-                |   └── app.component.ts                                      #   Componente Principal (.ts)
-                |   └── app.routes.ts                                         #   Configuración de rutas
-                └── main.ts                                                   #   Inicio del proyecto Frontend
-
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 02. Crear el Proyecto de Angular en la carpeta raíz y arrancar el servidor --------------------------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
---- 02.01. Desde la Terminal:
-
-            PS C:\..> ng new frontend
-
-            ❯ CSS             [ https://developer.mozilla.org/docs/Web/CSS                     ]
-            ? Do you want to enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering)? (y/N) n
-
---- 02.02. Ingresar a la carpeta 'frontend' desde la Terminal:
-
-            PS C:\..> cd frontend
-
---- 02.03. Ejecutar el Servidor desde la Terminal:
-
-            PS C:\..\frontend> ng s -o
-
-            (y/N) y
+              htdocs/                                                                       
+              └── proyecto/                                                           
+                  └── backend/                                                          
+                      ├── config/                                                       
+                      │   └── DbConn.php                                                
+                      ├── controllers/                                                  
+                      │   └── Locations.php                                             
+                      ├── models/                                                       
+                      │   └── Location.php
+                      frontend/                                                         
+                      ├── public/                                                       #   Carpeta pública
+                      │   └── assets                                                    #   Carpeta de archivos públicos (estáticos)
+                      └── src/                                                          #   Carpeta de recursos de Angular
+                          ├── app/                                                      #   Carpeta de la Aplicación de Angular
+                          |   ├── components/                                           #   Carpeta de Componentes
+                          |   │   ├── details/                                          #   Carpeta del Componente 'details'
+                          |   │   │   ├── details.component.ts                          #   Componente 'details' que alimenta la vista HTML
+                          |   │   │   └── details.component.html                        #   Vista del componente 'details' en HTML
+                          |   │   ├── home/                                             #   Carpeta del Componente 'home'
+                          |   │   │   ├── home.component.ts                             #   Componente 'home' que alimenta la vista HTML
+                          |   │   │   └── home.component.html                           #   Vista del componente 'home' en HTML
+                          |   │   └── housing-location/                                 #   Carpeta del Componente 'housing-location'
+                          |   │       ├── housing-location.component.ts                 #   Componente 'housing-location' que alimenta la vista HTML
+                          |   │       └── housing-location.component.html               #   Vista del componente 'housing-location' en HTML
+                          |   └── services/                                             #   Carpeta de servicios
+                          |   │   └── housing-location.service.ts                       #   Servicio 'housing-location'
+                          |   └── interfaces/                                           #   Carpeta de Interfaces
+                          |   │   └── housing-location.ts                               #   Interfaz 'housing-location'
+                          |   └── app.component.html                                    #   Componente Principal (.html)
+                          |   └── app.component.ts                                      #   Componente Principal (.ts)
+                          |   └── app.routes.ts                                         #   Configuración de rutas
+                          ├── styles.css                                                #   Estilos Globales
+                          └── main.ts                                                   #   Inicio del proyecto Frontend
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 03. Crear las Interfaces, Servicios y Componentes ---------------------------------------------------------------------------------------------------|
+|-- 02.02. Crear el Proyecto de Angular en la carpeta raíz y arrancar el servidor -----------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
---- 03.01. Abrir otra Terminal e ingresar a la carpeta 'frontend':
+--- 02.02.01. Desde la Terminal:
 
-            PS C:\..> cd frontend
+              PS C:\..> ng new frontend
 
---- 03.02. Cambiar el nombre de las Terminales. En la parte inferior derecha, seleccionar y presionar F2.
+              ❯ CSS             [ https://developer.mozilla.org/docs/Web/CSS                     ]
+              ? Do you want to enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering)? (y/N) n
 
---- 03.03. Crear la interfaz, servicio y componente de 'housing-location'
+--- 02.02.02. Ingresar a la carpeta 'frontend' desde la Terminal:
 
-            PS C:\..\frontend> ng g i interfaces/housing-location
-            PS C:\..\frontend> ng g s services/housing-location
-            PS C:\..\frontend> ng g c components/home
-            PS C:\..\frontend> ng g c components/housing-location
-            PS C:\..\frontend> ng g c components/details
+              PS C:\..> cd frontend
 
+--- 02.02.03. Ejecutar el Servidor desde la Terminal:
 
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 04. Carpeta Pública: src/app/app.component.html ----------------------------------------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+              PS C:\..\frontend> ng s -o
 
---- 04.01. Crear en la carpeta 'frontend/public' la carpeta 'assets' y cargar las siguientes imágenes:
-
-             https://github.com/ProfeAlbeiro/angular/blob/main/sources/assets/logo.svg
-             https://github.com/ProfeAlbeiro/angular/blob/main/sources/assets/location-pin.svg
-
+              (y/N) y
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 04. Inicio: src/main.ts -----------------------------------------------------------------------------------------------------------------------------|
+|-- 02.03. Crear las Interfaces, Servicios y Componentes ------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01      import { bootstrapApplication } from '@angular/platform-browser';
-            02      import { AppComponent } from './app/app.component';
-            03      import { routes } from './app/app.routes';
-            04      import { provideRouter } from '@angular/router';
-            05      import { provideHttpClient } from '@angular/common/http';
-            06
-            07      bootstrapApplication(AppComponent, {
-            08        providers: [provideHttpClient(), provideRouter(routes)]
-            09      })
-            10        .catch((err) => console.error(err));
+--- 02.03.01. Abrir otra Terminal e ingresar a la carpeta 'frontend':
 
+              PS C:\..> cd frontend
 
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 05. Componente Principal (.ts): src/app/app.component.ts --------------------------------------------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+--- 02.03.02. Cambiar el nombre de las Terminales. En la parte inferior derecha, seleccionar y presionar F2.
 
-            01      import { Component } from '@angular/core';
-            02      import { RouterOutlet, RouterModule } from '@angular/router';
-            03
-            04      @Component({
-            05        selector: 'app-root',
-            06        imports: [RouterOutlet, RouterModule],
-            07        templateUrl: './app.component.html',
-            08        styleUrl: './app.component.css'
-            09      })
-            10      export class AppComponent {
-            11        title = 'frontend';
-            12      }
+--- 02.03.03. Crear la interfaz, servicio y componente de 'housing-location'
+
+              PS C:\..\frontend> ng g i interfaces/housing-location
+              PS C:\..\frontend> ng g s services/housing-location
+              PS C:\..\frontend> ng g c components/home
+              PS C:\..\frontend> ng g c components/housing-location
+              PS C:\..\frontend> ng g c components/details
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 06. Componente Principal (.html): src/app/app.component.html ----------------------------------------------------------------------------------------|
+|-- 02.04. Carpeta Pública: frontend/public/assets ------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
---- 04.02. Agregar los estilos globales al archivo 'app01/src/styles.css', desde el siguiente enlace:
+--- 02.04.01. Crear en la carpeta 'frontend/public' la carpeta 'assets' y cargar las siguientes imágenes:
 
-             https://github.com/ProfeAlbeiro/angular/blob/main/sources/css/styles.css
-
-
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|-- 06. Componente Principal (.html): src/app/app.component.html ----------------------------------------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-            01      <main class="main"> 
-            02          <router-outlet />  
-            03      </main>
+              https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/assets/location-pin.svg
+              https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/assets/logo.svg
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|--07. Rutas: src/app/app.routes.ts ---------------------------------------------------------------------------------------------------------------------|
+|-- 02.05. Estilos Globales (.html): frontend/src/src/styles.css ----------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01      import { Routes } from '@angular/router';
-            02      import { HomeComponent } from './components/home/home.component';
-            03      import { DetailsComponent } from './components/details/details.component';
-            04
-            05      export const routes: Routes = [
-            06          {path:'', component: HomeComponent, title:'Home Page'},
-            07          {path:'details/:id', component: DetailsComponent, title:'Home Details'}
-            08      ];
+--- 02.05.01. Agregar los estilos globales al archivo 'styles.css', desde el siguiente enlace:
+
+              https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/css/styles.css
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|--08. Interfaz: src/app/interfaces/housing-location.ts -------------------------------------------------------------------------------------------------|
+|-- 02.06. Inicio: frontend/src/main.ts -----------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-            01      export interface HousingLocation {
-            02        id?: number;
-            03        name: string;
-            04        city: string;
-            05        state: string;
-            06        photo: string;
-            07        availableUnits: number;
-            08        wifi: boolean;
-            09        laundry: boolean;
-            10      }
-
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|--09. Servicio: housing-location.service.ts ------------------------------------------------------------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { HousingLocation } from '../interfaces/housing-location';
-
-@Injectable({ providedIn: 'root' })
-export class HousingLocationService {
-  private apiUrl = 'http://localhost/api_php/api_php_03_prac_location/controllers/Locations.php';
-
-  constructor(private http: HttpClient) {}
-
-  getAllLocations(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
-  }
-
-  createLocation(location: HousingLocation): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl, location, { headers });
-  }
-
-  updateLocation(location: HousingLocation): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<any>(this.apiUrl, location, { headers });
-  }
-
-  deleteLocation(id: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.request<any>('DELETE', this.apiUrl, { body: { id }, headers });
-  }
-}
-
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Componente: housing-location.component.ts */
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+              01      import { bootstrapApplication } from '@angular/platform-browser';
+              02      import { AppComponent } from './app/app.component';
+              03      import { routes } from './app/app.routes';
+              04      import { provideRouter } from '@angular/router';
+              05      import { provideHttpClient } from '@angular/common/http';
+              06
+              07      bootstrapApplication(AppComponent, {
+              08        providers: [provideHttpClient(), provideRouter(routes)]
+              09      })
+              10        .catch((err) => console.error(err));
 
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-/* Componente: housing-location.component.ts */
+|-- 02.06. Componente Principal (.ts): frontend/src/app/app.component.ts --------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+              01      import { Component } from '@angular/core';
+              02      import { RouterOutlet, RouterModule } from '@angular/router';
+              03
+              04      @Component({
+              05        selector: 'app-root',
+              06        imports: [RouterOutlet, RouterModule],
+              07        templateUrl: './app.component.html',
+              08        styleUrl: './app.component.css'
+              09      })
+              10      export class AppComponent {
+              11        title = 'frontend';
+              12      }
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.07. Componente Principal (.html): frontend/src/app/app.component.html ----------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+              01      <main class="main">
+              02        <a routerLink="/">
+              03          <header class="brand-home">
+              04            <img class="brand-logo" src="assets/logo.svg" alt="logo" />
+              05          </header>
+              06        </a>
+              07        <section class="content">
+              08          <router-outlet />    
+              09        </section>
+              10      </main>
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.08. Configuración de Rutas: frontend/src/app/app.routes.ts ---------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+              01      import { Routes } from '@angular/router';
+              02      import { HomeComponent } from './components/home/home.component';
+              03      import { DetailsComponent } from './components/details/details.component';
+              04
+              05      export const routes: Routes = [
+              06          {path:'', component: HomeComponent, title:'Home Page'},
+              07          {path:'details/:id', component: DetailsComponent, title:'Home Details'}
+              08      ];
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.09. Interfaz: frontend/src/app/interfaces/housing-location.ts ------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+              01      export interface HousingLocation {
+              02        id?: number;
+              03        name: string;
+              04        city: string;
+              05        state: string;
+              06        photo: string;
+              07        availableUnits: number;
+              08        wifi: boolean;
+              09        laundry: boolean;
+              10      }
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.10. Servicio: frontend/src/app/services/housing-location.service.ts ------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+              01      import { Injectable } from '@angular/core';
+              02      import { HttpClient, HttpHeaders } from '@angular/common/http';
+              03      import { Observable } from 'rxjs';
+              04      import { HousingLocation } from '../interfaces/housing-location';
+              05
+              06      @Injectable({
+              07        providedIn: 'root'
+              08      })
+              09      export class HousingLocationService {
+              10        private url = 'http://localhost/api_php_angular/backend/controllers/Locations.php';
+              11
+              12        constructor(private http: HttpClient) { }
+              13
+              14        getAllLocations(): Observable<any> {
+              15          return this.http.get<any>(this.url);
+              16        }
+              17
+              18        createLocation(location: HousingLocation): Observable<any> {
+              19          const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+              20          return this.http.post<any>(this.url, location, { headers });
+              21        }
+              22
+              23        updateLocation(location: HousingLocation): Observable<any> {
+              24          const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+              25          return this.http.put<any>(this.url, location, { headers });
+              26        }
+              27
+              28        deleteLocation(id: number): Observable<any> {
+              29          const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+              30          return this.http.request<any>('DELETE', this.url, { body: { id }, headers });
+              31        }
+              32      }
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.11. Componente 'home': frontend/src/app/components/home/home.component.ts ------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+                  import { Component, inject } from '@angular/core';
+                  import { HousingLocationComponent } from '../housing-location/housing-location.component';
+                  import { HousingLocation } from '../housing-location';
+                  import { CommonModule } from '@angular/common';
+                  import { HousingService } from '../housing.service';
+
+                  @Component({
+                    selector: 'app-home',
+                    imports: [CommonModule, HousingLocationComponent],
+                    templateUrl: './home.component.html',
+                    styleUrl: './home.component.css'
+                  })
+                  export class HomeComponent {
+                    housingLocationList: HousingLocation[] = [];
+                    housingService: HousingService = inject(HousingService);
+                    filteredLocationList: HousingLocation[] = [];
+
+                    constructor(){
+                      this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
+                        this.housingLocationList = housingLocationList;
+                        this.filteredLocationList = housingLocationList;
+                      })    
+                    }
+
+                    filterResults(text:string){
+                      if (!text) {
+                        this.filteredLocationList = this.housingLocationList;
+                        return;
+                      }
+                      this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
+                        housingLocation?.city.toLowerCase().includes(text.toLowerCase()) 
+                      )
+                    }
+
+                  }
+
+
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-- 02.11. Componente 'housing-location': frontend/src/app/components/housing-location/housing-location.component.ts ------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 import { Component, OnInit } from '@angular/core';
