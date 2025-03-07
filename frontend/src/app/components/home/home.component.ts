@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HousingLocationComponent } from '../housing-location/housing-location.component';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { HousingLocation } from '../../interfaces/housing-location';
 import { HousingLocationService } from '../../services/housing-location.service';
-import { CommonModule } from '@angular/common';
+import { HousingLocationComponent } from '../housing-location/housing-location.component';
 
 @Component({
   selector: 'app-home',
@@ -10,33 +10,26 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
-  locations: HousingLocation[] = [];
+export class HomeComponent {
+  housingLocationList: HousingLocation[] = [];
+  housingService: HousingLocationService = inject(HousingLocationService);
+  filteredLocationList: HousingLocation[] = [];
 
-  constructor(private housingLocationService: HousingLocationService) {}
-  
-  ngOnInit(): void {
-    this.getLocations();
+  constructor(){
+    this.housingService.getAllHousingLocation().then((housingLocationList: HousingLocation[]) => {
+      this.housingLocationList = housingLocationList;
+      this.filteredLocationList = housingLocationList;
+    })
   }
 
-  getLocations(): void {
-    this.housingLocationService.getAllLocations().subscribe(
-      response => {
-        console.log('Respuesta de la API:', response);
-        this.locations = response.datos;
-      },
-      error => console.error('Error al obtener las ubicaciones:', error)
-    );
+  filterResults(text:string){
+    if (!text) {
+      this.filteredLocationList = this.housingLocationList;
+      return;
+    }
+    this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
+      housingLocation?.city.toLowerCase().includes(text.toLowerCase())
+    )
   }
-
-  // filterResults(text:string){
-  //   if (!text) {
-  //     this.filteredLocationList = this.housingLocationList;
-  //     return;
-  //   }
-  //   this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
-  //     housingLocation?.city.toLowerCase().includes(text.toLowerCase()) 
-  //   )
-  // }
 
 }

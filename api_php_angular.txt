@@ -4,12 +4,12 @@
 |||--------------------------------------------------------------- Y CONSUMO EN ANGULAR ---------------------------------------------------------------|||
 |||----------------------------------------------------------------------------------------------------------------------------------------------------|||
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
-|||                                                                                                                                                    ||| 
+|||                                                                                                                                                    |||
 ||| -- 01. Creación de la APIREST en PHP      (backend)                                                                                                |||
 ||| -- 02. Consumo de la APIREST con ANGULAR  (frontend)                                                                                               |||
-|||                                                                                                                                                    ||| 
+|||                                                                                                                                                    |||
 ||| -- AUTOR: INSTRUCTOR ALBEIRO RAMOS. SENA, 2025                                                                                                     |||
-|||                                                                                                                                                    ||| 
+|||                                                                                                                                                    |||
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 
 
@@ -17,7 +17,7 @@
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |---------------------------------------------------------- 01. CREACIÓN DE LA APIREST EN PHP -----------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------------------- (BACKEND) -----------------------------------------------------------------------|
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 
 
@@ -30,7 +30,7 @@
                   └── backend/                           #   Carpeta de la APIRESTFULL en PHP
                       ├── config/                        #   Carpeta que contiene las configuraciones.
                       │   └── DbConn.php                 #   Configuración de la conexión a la base de datos.
-                      ├── controllers/                   #   Carpeta que contiene los controladores                        
+                      ├── controllers/                   #   Carpeta que contiene los controladores
                       │   └── Locations.php              #   Controlador de Locations (Entrada el Proyecto)
                       ├── models/                        #   Carpeta que contiene los modelos
                       │   └── Location.php               #   Modelo de Datos de 'Location'
@@ -39,7 +39,7 @@
               NOTA: Se debe crear la base de datos. Puede descargarla desde el siguiente enlace:
 
                     https://github.com/ProfeAlbeiro/api_php_angular/blob/main/sources/db/db.sql
-              
+
 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 |-- 01.02. models/location.php -------------------------------------------------------------------------------------------------------------------------|
@@ -71,7 +71,7 @@
               24            }
               25
               26            public function updateHousingLocation($id, $name, $city, $state, $photo, $availableUnits, $wifi, $laundry) {
-              27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?, 
+              27                $stmt = $this->conn->prepare("UPDATE locations SET name = ?, city = ?, state = ?, photo = ?, availableUnits = ?,
               28                        wifi = ?, laundry = ? WHERE id = ?");
               29                return $stmt->execute([$name, $city, $state, $photo, $availableUnits, $wifi, $laundry, $id]);
               30            }
@@ -123,7 +123,7 @@
               08          require_once("../models/Location.php");
               09
               10          $location = new Location;
-              11            
+              11
               12          function sendResponse($code, $message, $data = null) {
               13              http_response_code($code);
               14              echo json_encode(['message' => $message, 'datos' => $data]);
@@ -232,8 +232,8 @@
 
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|--------------------------------------------------------- 02. PRUEBAS DE LA APIREST EN POSTMAN ---------------------------------------------------------|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------------------------------------------------- 02. CONSUMO DE LA APIREST CON ANGULAR ---------------------------------------------------------|
+|---------------------------------------------------------------------- (FRONTEND) ----------------------------------------------------------------------|
 |||\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||
 
 
@@ -241,16 +241,16 @@
 |-- 02.01. Estructura de carpetas -----------------------------------------------------------------------------------------------------------------------|
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-              htdocs/                                                                       
-              └── proyecto/                                                           
-                  └── backend/                                                          
-                      ├── config/                                                       
-                      │   └── DbConn.php                                                
-                      ├── controllers/                                                  
-                      │   └── Locations.php                                             
-                      ├── models/                                                       
+              htdocs/
+              └── proyecto/
+                  └── backend/
+                      ├── config/
+                      │   └── DbConn.php
+                      ├── controllers/
+                      │   └── Locations.php
+                      ├── models/
                       │   └── Location.php
-                      frontend/                                                         
+                      frontend/
                       ├── public/                                                       #   Carpeta pública
                       │   └── assets                                                    #   Carpeta de archivos públicos (estáticos)
                       └── src/                                                          #   Carpeta de recursos de Angular
@@ -381,7 +381,7 @@
               05          </header>
               06        </a>
               07        <section class="content">
-              08          <router-outlet />    
+              08          <router-outlet />
               09        </section>
               10      </main>
 
@@ -479,7 +479,7 @@
                       this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
                         this.housingLocationList = housingLocationList;
                         this.filteredLocationList = housingLocationList;
-                      })    
+                      })
                     }
 
                     filterResults(text:string){
@@ -488,7 +488,7 @@
                         return;
                       }
                       this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
-                        housingLocation?.city.toLowerCase().includes(text.toLowerCase()) 
+                        housingLocation?.city.toLowerCase().includes(text.toLowerCase())
                       )
                     }
 
@@ -564,14 +564,14 @@ export class HousingLocationComponent implements OnInit {
 
 
 Respuesta JSON: {message: 'Viviendas y ubicación obtenidas', datos: Array(10)}
-                
+
 datos
-: 
+:
 (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
 message
-: 
+:
 "Viviendas y ubicación obtenidas"
 
 [[Prototype]]
-: 
+:
 Object

@@ -1,32 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { HousingLocation } from '../interfaces/housing-location';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HousingLocationService {
-  private url = 'http://localhost/api_php_angular/backend/controllers/Locations.php';
+  url = 'http://localhost/api_php_angular/backend/controllers/Locations.php';
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
-  getAllLocations(): Observable<any> {
-    return this.http.get<any>(this.url);
+  async getAllHousingLocation(): Promise<HousingLocation[]> {
+    try {
+      const data = await fetch(this.url);
+      if (!data.ok) {
+        throw new Error(`Error HTTP: ${data.status}`);
+      }
+      const response = await data.json();
+      return response.datos;
+    } catch (error) {
+      console.error('Error al obtener datos:', error);
+      return [];
+    }
   }
 
-  createLocation(location: HousingLocation): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.url, location, { headers });
+  async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
+    const url = `${this.url}/${id}`;
+    console.log('URL de la API:', url);
+    try {
+      const data = await fetch(url);
+      if (!data.ok) {
+        throw new Error(`Error HTTP: ${data.status}`);
+      }
+      const response = await data.json();
+      return response.datos.find((item: HousingLocation) => item.id === id);
+    } catch (error) {
+      console.error('Error al obtener datos:', error);
+      return undefined;
+    }
   }
 
-  updateLocation(location: HousingLocation): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<any>(this.url, location, { headers });
-  }
-
-  deleteLocation(id: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.request<any>('DELETE', this.url, { body: { id }, headers });
+  submitApplication(firstName: string, lastName: string, email: string) {
+    console.log(`FirstName: ${firstName} - LastName: ${lastName} - Email: ${email}`);
   }
 }

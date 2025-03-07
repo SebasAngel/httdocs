@@ -5,18 +5,18 @@ import { HousingLocation } from './housing-location';
   providedIn: 'root'
 })
 export class HousingService {
-  
+
   // url = 'http://localhost/api_php_angular/backend/controllers/Locations.php';
   url = 'http://localhost:3000/locations';
 
-  constructor() { } 
+  constructor() { }
 
   // API_NODE.JS_JSONSERVER: Conseguir todos
   async getAllHousingLocation(): Promise<HousingLocation[]> {
     const data = await fetch(this.url);
     return (await data.json());
   }
-  
+
   // API_NODE.JS_JSONSERVER: Conseguir por identificador
   async getHousingLocationById(id:number): Promise<HousingLocation | undefined> {
     const data = await fetch(`${this.url}/${id}`);
@@ -38,7 +38,7 @@ export class HousingService {
   //     return []; // Devuelve un arreglo vacío en caso de error
   //   }
   // }
-  
+
   // // API_PHP: Conseguir por Identificador
   // async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
   //   const url = `${this.url}/${id}`;
