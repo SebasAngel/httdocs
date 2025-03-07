@@ -4,6 +4,9 @@
         <button type="button" class="primary" (click)="filterResults(filter.value)" >Search</button>
     </form>
     <section class="results">
-        <app-housing-location></app-housing-location>
+        <app-housing-location
+            *ngFor="let housingLocation of filteredLocationList"
+            [housingLocation]="housingLocation">
+        </app-housing-location>
     </section>
 </section>
